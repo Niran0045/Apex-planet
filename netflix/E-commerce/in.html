@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIMPLE CITY</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: black;
+      color: white;
+      padding: 30px 40px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #ff9800;
+    }
+
+    .cart-btn {
+      background: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .cart-btn:hover {
+      background: #ddd;
+    }
+
+    /* Products Grid */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product img {
+      width: auto;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+
+    .product button {
+      padding: 8px 12px;
+      border: none;
+      background: black;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .product button:hover {
+      background: #444;
+    }
+
+    /* Popup (Cart, Login, Register reuse same style) */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      width: 350px;
+      max-height: 80%;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .popup-content h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .popup-content button {
+      margin-top: 10px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 10px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background: darkgreen;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 8px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    /* Footer */
+footer {
+  background: #111;
+  color: #ddd;
+  padding: 40px 20px 20px;
+  margin-top: 40px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  color: #ddd;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #ff9800;
+}
+
+.social-links a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.social-links a:hover {
+  color: #ff9800;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #444;
+  margin-top: 20px;
+  padding-top: 15px;
+  font-size: 13px;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>ShopNex </h1>
+    <div class="nav-links">
+      <a id="loginLink">Login</a>
+      <a id="registerLink">Register</a>
+      <button class="cart-btn" id="cartBtn">🛒 Cart (<span id="cartCount">0</span>)</button>
+    </div>
+  </header>
+
+  <!-- Products -->
+  <section class="products">
+    <div class="product">
+      <img src="https://m.media-amazon.com/images/I/81UKVHM77GL._AC_SL1500_.jpg" alt="Product 1">
+      <h3>I Phone 15</h3>
+      <p>₹60,000</p>
+      <button onclick="addToCart('Product 1',20)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.WGOZNjuNIvkVixSj9rQBcAHaIs?pid=Api&P=0&h=180" alt="Product 2">
+      <h3>Smart Watch</h3>
+      <p>₹2,000</p>
+      <button onclick="addToCart('Product 2',35)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse3.mm.bing.net/th/id/OIP.UPIYiYbVNjgeov1_au7igwHaE8?pid=Api&P=0&h=180" alt="Product 3">
+      <h3>Apple Airpods</h3>
+      <p>₹15,000</p>
+      <button onclick="addToCart('Product 3',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://m.media-amazon.com/images/I/71XwLX0ySeL.jpg" alt="Product 3">
+      <h3>HP Laptop</h3>
+      <p>₹45,000</p>
+      <button onclick="addToCart('Product 4',60)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://i5.walmartimages.com/asr/cc8e4dc2-c3f0-40d9-a393-7bd40ea4f543.21d67d466391c0dd7d70ee5a094adfb4.jpeg?odnWidth=1000&odnHeight=1000&odnBg=ffffff" alt="Product 3">
+      <h3>Mac Book</h3>
+      <p>₹1,15,000</p>
+      <button onclick="addToCart('Product 5',65)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://www.hp.com/content/dam/sites/worldwide/personal-computers/consumer/desktops-and-all-in-ones/HP20150331039@2x.png" alt="Product 3">
+      <h3>HP Computer</h3>
+      <p>₹65,000</p>
+      <button onclick="addToCart('Product 6',70)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://www.pngmart.com/files/22/T-Shirt-PNG-Photo.png" alt="Product 3">
+      <h3>T-Shirt </h3>
+      <p>₹500</p>
+      <button onclick="addToCart('Product 7',80)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://i5.walmartimages.com/seo/Dubinik-Denim-Shirt-Men-Mens-Denim-Shirts-Long-Sleeve-Mens-Denim-Button-Down-Shirt-Cotton-Regular-Fit-Casual-Work-Shirts_a7022c71-cece-43e7-b4b3-b9af10fd384f.55754711f98e2a97726f19012c74bff8.jpeg" alt="Product 3">
+      <h3>Jeans Shirt</h3>
+      <p>₹600</p>
+      <button onclick="addToCart('Product 8',85)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.4dH2gPHGqnCY6B1xF2UFUAHaHa?pid=Api&P=0&h=180" alt="Product 3">
+      <h3>Jeans Pant</h3>
+      <p>₹799</p>
+      <button onclick="addToCart('Product 9',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://assets.ullapopken.de/images/products/819034902_ecom_g_01.jpg" alt="Product 3">
+      <h3>Shorts</h3>
+      <p>₹200</p>
+      <button onclick="addToCart('Product 10',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://i5.walmartimages.com/asr/96554892-e5ec-4838-9cad-449077916242_1.4d5a8a03103fc019f5214f4478df5e1e.jpeg" alt="Product 3">
+      <h3>Hoodie</h3>
+      <p>₹600</p>
+      <button onclick="addToCart('Product 11',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse3.mm.bing.net/th/id/OIP.uE9Atqzgi691f584_OubLQHaHa?pid=Api&P=0&h=180" alt="Product 3">
+      <h3>Shoes</h3>
+      <p>₹599</p>
+      <button onclick="addToCart('Product 12',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.4LGn0XQCqcal3tG2mRxMSQHaGQ?pid=Api&P=0&h=180" alt="Product 3">
+      <h3>Cricket Bat</h3>
+      <p>₹80,000</p>
+      <button onclick="addToCart('Product 13',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://nwscdn.com/media/catalog/product/c/r/cricket-club-ball-family_1.jpg" alt="Product 3">
+      <h3>Cricket Ball</h3>
+      <p>₹12,000</p>
+      <button onclick="addToCart('Product 14',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://cdn.mrcrickethockey.com/wp-content/uploads/2023/12/06152719/Shrey-Meta-Wheelie-120-BlackAndBlue-Front.jpg" alt="Product 3">
+      <h3>Cricket Bag</h3>
+      <p>₹1500</p>
+      <button onclick="addToCart('Product 15',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://rukminim1.flixcart.com/image/832/832/xif0q/shoe/3/p/z/-original-imagg6duwvbgmvkg.jpeg?q=70" alt="Product 3">
+      <h3>Cricket Shoes</h3>
+      <p>₹900</p>
+      <button onclick="addToCart('Product 16',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://woodemos.extendons.com/productbundles/wp-content/uploads/2019/03/pin_snr_m_2048x-1024x1024.jpg" alt="Product 3">
+      <h3>Cricket Glows</h3>
+      <p>₹2000</p>
+      <button onclick="addToCart('Product 17',50)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.IXG6-mBy4UhPiRjSmGUhSwHaHa?pid=Api&P=0&h=180" alt="Product 3">
+      <h3>Cricket Pad</h3>
+      <p>₹5,000</p>
+      <button onclick="addToCart('Product 18',50)">Add to Cart</button>
+    </div>
+  </section>
+
+  <!-- Cart Popup -->
+  <div class="popup" id="cartPopup">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup('cartPopup')">&times;</span>
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
+      <button class="checkout-btn" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      total += price;
+      document.getElementById("cartCount").innerText = cart.length;
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItemsDiv = document.getElementById("cartItems");
+      cartItemsDiv.innerHTML = "";
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.classList.add("cart-item");
+        div.innerHTML = `<span>${item.name}</span><span>$${item.price}</span>`;
+        cartItemsDiv.appendChild(div);
+      });
+      document.getElementById("cartTotal").innerText = total;
+    }
+
+    document.getElementById("cartBtn").onclick = function() {
+      document.getElementById("cartPopup").style.display = "flex";
+    };
+
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = "none";
+    }
+
+    // Close when clicking outside
+    window.onclick = function(event) {
+      const cartPopup = document.getElementById("cartPopup");
+      if (event.target === cartPopup) cartPopup.style.display = "none";
+    };
+  </script>
+ <!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>NS SHOP</h3>
+      <p>Your one-stop shop for quality products at the best prices.</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Cart</a></li>
+        <li><a href="checkout.html">Checkout</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact Us</h4>
+      <p>Email: support@nsshop.com</p>
+      <p>Phone: +91 98765 43210</p>
+      <div class="social-links">
+        <a href="#">🔗 Facebook</a>
+        <a href="#">🔗 Instagram</a>
+        <a href="#">🔗 Twitter</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 NS SHOP. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
